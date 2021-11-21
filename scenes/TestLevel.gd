@@ -33,3 +33,8 @@ func game_process():
 func touched_sun(area):
 	worldstate = "menu"
 	emit_signal("die")
+	var skip_first_child = false
+	for _i in $maze_generation.get_children():
+		if skip_first_child == false:
+			skip_first_child = true
+		else: _i.queue_free()
