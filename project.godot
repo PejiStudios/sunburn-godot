@@ -136,3 +136,8 @@ dash={
 2d_physics/layer_3="sun"
 2d_physics/layer_4="tree"
 2d_physics/layer_5="fire"
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+quality/driver/fallback_to_gles2=true
