@@ -27,13 +27,16 @@ _global_script_class_icons={
 [application]
 
 config/name="SunBurn"
-run/main_scene="res://scenes/TestLevel.tscn"
+run/main_scene="res://scenes/main.tscn"
+boot_splash/image="res://splash.png"
+boot_splash/bg_color=Color( 0.901961, 0.901961, 0.901961, 1 )
 config/icon="res://icon.png"
 
 [autoload]
 
-PlayerData="*res://autoload/PlayerData.tscn"
-MusicPlayer="*res://autoload/MusicPlayer.tscn"
+PlayerData="res://autoload/PlayerData.tscn"
+MusicPlayer="res://autoload/MusicPlayer.tscn"
+l0nkLib="*res://l0nkLib.gd"
 
 [debug]
 
@@ -44,8 +47,6 @@ gdscript/warnings/unused_signal=false
 
 window/size/width=480
 window/size/height=360
-window/size/borderless=true
-window/size/fullscreen=true
 window/handheld/orientation="sensor_landscape"
 window/stretch/mode="2d"
 window/stretch/aspect="keep_width"

@@ -16,7 +16,6 @@ var y_speed
 
 func _ready() -> void:
 	$"/root/Level".connect("die", self, "reset")
-	PlayerData.teleporting = false
 
 func _process(_delta):
 	pass
@@ -40,9 +39,8 @@ func _physics_process(_delta: float) -> void:
 	emit_signal("player_state",playerstate)
 
 func movement() -> void:
-	var is_jump_interrupted: = Input.is_action_just_released("jump") and _velocity.y < 0.0
 	var direction: = get_direction()
-	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
+	_velocity = calculate_move_velocity(_velocity, direction, speed)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
 	if hitstun == true:
 		_velocity.y = -stomp_impulse
@@ -59,16 +57,17 @@ func get_direction() -> Vector2:
 func calculate_move_velocity(
 		linear_velocity: Vector2,
 		direction: Vector2,
-		speed: Vector2,
-		is_jump_interrupted: bool
+		speed: Vector2
 	) -> Vector2:
 	var out = linear_velocity
+	var is_jump_interrupted = false
 	out.x = speed.x * direction.x
 	out.y += gravity * get_physics_process_delta_time()
 	if direction.y == -1.0:
 		out.y = speed.y * direction.y
 	if is_jump_interrupted:
 		out.y = 0.0
+	is_jump_interrupted = true
 	return out
 
 
