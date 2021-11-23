@@ -2,10 +2,13 @@ extends TileMap
 
 var duplicated = false
 var mazes_list
+var fires
+var fire_frame = 1
 var rng = RandomNumberGenerator.new()
 
 
 func _ready():
+	fires = $dmg.get_used_cells()
 	duplicated = false
 	mazes_list = $"/root/Level".mazes_list
 	rng.randomize()
@@ -13,7 +16,9 @@ func _ready():
 	$"/root/Level".connect("die", self, "reset")
 
 func _process(delta):
-	if map_to_camera().y <= 348 && duplicated == false:
+	for i in fires:
+		$dmg.set_cell(i.x, i.y, get_tileset().find_tile_by_name("fire" + str(fire_frame)))
+	if map_to_camera().y <= 348 and duplicated == false:
 		duplicated = true
 		var rand_maze = random_entry(mazes_list)
 		print(rand_maze)
@@ -21,8 +26,14 @@ func _process(delta):
 		var new_maze = load_maze.instance()
 		$"/root/Level/maze_generation".add_child(new_maze)
 		new_maze.position.y = (position.y + 192)
+	
 	if map_to_camera().y <= -100:
 		queue_free()
+	match fire_frame:
+		1:
+			fire_frame = 2
+		2:
+			fire_frame = 1
 
 func get_random_entry(array):
 	return array[randi() % array.size()]
@@ -34,5 +45,8 @@ func random_entry(origin: Array):
 	return str(origin[0]) + str(origin[rng.randi_range(1,origin.size()-1)])
 
 func reset():
+	$trees.set_cell($trees.get_used_cells()[0].x,
+		$trees.get_used_cells()[0].y, 
+		get_tileset().find_tile_by_name("tree2"))
 	position.y = 540
 	duplicated = false

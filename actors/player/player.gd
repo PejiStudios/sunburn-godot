@@ -2,19 +2,18 @@ extends Actor
 
 export var stomp_impulse = 1000.0
 var playerstate = 0
+var soundcount = 0
 signal player_state(ps)
 signal start_scroll
 signal died
-var attacking = false
-var flipped = -1
-var hitstun = false
-var dashing = false
-var dashes_left = 1
-var just_attacking = false
 var x_speed
 var y_speed
+var sfx_list = []
 
 func _ready() -> void:
+	l0nkLib.list_files("res://assets/sfx/", sfx_list, ".wav")
+#	[res://assets/sfx/, death.wav, hit.wav, jump.wav, reset.wav]
+	print(sfx_list)
 	$"/root/Level".connect("die", self, "reset")
 
 func _process(_delta):
@@ -24,7 +23,6 @@ func _physics_process(_delta: float) -> void:
 	if is_on_floor():
 		playerstate = 0
 	else: playerstate = 1
-#Playerstates: 0 = idle/floored, 1 = airborne, 2 = dashing, 3 = hitstun, 4 = tping
 	match playerstate:
 		0:
 			movement()
@@ -42,9 +40,6 @@ func movement() -> void:
 	var direction: = get_direction()
 	_velocity = calculate_move_velocity(_velocity, direction, speed)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL)
-	if hitstun == true:
-		_velocity.y = -stomp_impulse
-		hitstun = false
 	x_speed = _velocity.x
 	y_speed = _velocity.y
 
@@ -53,6 +48,10 @@ func get_direction() -> Vector2:
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
 		-1.0 if Input.is_action_just_pressed("jump") and is_on_floor() else 1.0
 	)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		l0nkLib.playMus($jump_channel, sfx_list, 3)
 
 func calculate_move_velocity(
 		linear_velocity: Vector2,
@@ -71,9 +70,42 @@ func calculate_move_velocity(
 	return out
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("attack"):
-		attacking = true
-
 func reset():
-	position.y = position.y - $"/root/Level/camera".pos_before_reset
+	position.y = position.y - $"/root/Level/camera".position.y
+
+
+func fire_death(body):
+	l0nkLib.playMus($sfx_channel, sfx_list, 2)
+	if soundcount == 0: soundcount = 1
+
+
+
+
+func tree_reset(body):
+	var cells = body.get_used_cells()
+	var tree = body.get_tileset().find_tile_by_name("tree1")
+	print(cells[0].x)
+	print(tree)
+	$"/root/Level/camera/background_texture/animation".stop()
+	$"/root/Level/camera/background_texture".modulate = Color(1,1,1,1)
+	$"/root/Level".worldspeed = 15
+	$"/root/Level".worldstate = "calm"
+	$"/root/Level/bckgndMus".stop()
+	body.set_cell(cells[0].x, cells[0].y, tree)
+	print(body.get_tileset().find_tile_by_name("tree1"))
+	l0nkLib.playMus($sfx_channel, sfx_list, 4)
+
+
+func _on_sfx_channel_finished():
+	match soundcount:
+		1:
+			l0nkLib.playMus($sfx_channel, sfx_list, 2)
+			soundcount = 2
+		2:
+			l0nkLib.playMus($sfx_channel, sfx_list, 2)
+			soundcount = 3
+		3:
+			$"/root/Level".touched_sun()
+			position.y = 58.395
+			l0nkLib.playMus($sfx_channel, sfx_list, 1)
+			soundcount = 0

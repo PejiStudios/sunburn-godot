@@ -15,9 +15,12 @@ func _process(delta):
 		"menu":
 			l0nkLib.playMus(self, songs_list, 6)
 		"heating":
-				if $"/root/Level".is_just_starting == true:
-					l0nkLib.playMus(self, songs_list, 5)
-					$"/root/Level".is_just_starting = false
+			if $"/root/Level".is_just_starting == true:
+				l0nkLib.playMus(self, songs_list, 5)
+				$"/root/Level".is_just_starting = false
+		"calm":
+			l0nkLib.musID = 0
+			l0nkLib.playMus(self, songs_list, 1)
 
 func _on_bckgndMus_finished():
 	match l0nkLib.musID:
@@ -33,3 +36,6 @@ func _on_bckgndMus_finished():
 			l0nkLib.playMus(self, songs_list, 4)
 		1:
 			l0nkLib.playMus(self, songs_list, 2)
+			$"/root/Level".worldstate = "heating"
+			$"/root/Level/camera/background_texture/animation".play("heatup")
+			$"/root/Level/camera/background_texture".modulate = Color(1,1,1,1)

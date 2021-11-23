@@ -63,7 +63,7 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="KinematicBody2D"]
-collision_mask = 8
+collision_mask = 2
 script = ExtResource( 2 )
 speed = Vector2( 300, 750 )
 gravity = 2000.0
@@ -76,11 +76,18 @@ texture = ExtResource( 1 )
 modulate = Color( 0.945098, 1, 0, 1 )
 shape = SubResource( 1 )
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="hurtbox" type="Area2D" parent="."]
 monitorable = false
-collision_mask = 28
+collision_mask = 16
 
-[node name="HurtHitbox" type="CollisionShape2D" parent="Hurtbox"]
+[node name="hitbox" type="CollisionShape2D" parent="hurtbox"]
+shape = SubResource( 2 )
+
+[node name="treebox" type="Area2D" parent="."]
+monitorable = false
+collision_mask = 8
+
+[node name="hitbox" type="CollisionShape2D" parent="treebox"]
 shape = SubResource( 2 )
 
 [node name="AnimationTimer" type="AnimationPlayer" parent="."]
@@ -91,5 +98,11 @@ anims/Hitbox = SubResource( 5 )
 [node name="Dtimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="body_entered" from="Hurtbox" to="." method="_enemy_collided"]
+[node name="jump_channel" type="AudioStreamPlayer" parent="."]
+
+[node name="sfx_channel" type="AudioStreamPlayer" parent="."]
+
+[connection signal="body_entered" from="hurtbox" to="." method="fire_death"]
+[connection signal="body_entered" from="treebox" to="." method="tree_reset"]
 [connection signal="timeout" from="Dtimer" to="." method="_on_Dtimer_timeout"]
+[connection signal="finished" from="sfx_channel" to="." method="_on_sfx_channel_finished"]

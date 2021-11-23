@@ -21,11 +21,12 @@ func _process(delta):
 		"heating":
 			game_process(delta)
 		"calm":
-			pass
-			#calmstate(delta)
+			grace_process(delta)
 
 func waitfor_start():
 	worldspeed = 0
+	$camera/background_texture/animation.stop()
+	$camera/background_texture.modulate = Color(1,1,1,1)
 	if $Player.position.y >= 180:
 		worldstate = "heating"
 		$camera/background_texture/animation.play("heatup")
@@ -38,10 +39,12 @@ func game_process(delta):
 	else: worldspeed += 0.7840997124 * delta
 
 
-func touched_sun(area):
+func grace_process(delta):
+	pass
+
+func touched_sun():
 	worldstate = "menu"
 	is_just_starting = true
-	$camera/background_texture.modulate = Color(1,1,1,1)
 	emit_signal("die")
 	var skip_first_child = false
 	for _i in $maze_generation.get_children():
