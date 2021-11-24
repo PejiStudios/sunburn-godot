@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _process(delta):
-#	print(worldstate)
+	checkforcode()
 	match worldstate:
 		"menu":
 			waitfor_start()
@@ -43,6 +43,7 @@ func grace_process(delta):
 	pass
 
 func touched_sun():
+	print("sun")
 	worldstate = "menu"
 	is_just_starting = true
 	emit_signal("die")
@@ -51,3 +52,9 @@ func touched_sun():
 		if skip_first_child == false:
 			skip_first_child = true
 		else: _i.queue_free()
+
+func checkforcode():
+	if "elpepe" in l0nkLib.codes:
+		l0nkLib.elpepe = !l0nkLib.elpepe
+		l0nkLib.codes =  ""
+	print(l0nkLib.elpepe)

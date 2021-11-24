@@ -6,6 +6,7 @@ var playing
 var loadmus
 var musID
 var elpepe = false
+var codes = ""
 
 func _ready():
 	pass
@@ -32,11 +33,10 @@ func get_file(origin: Array, index: int):
 func random_entry(origin: Array):
 	return str(origin[0]) + str(origin[rng.randi_range(1,origin.size()-1)])
 
-func playMus(player: AudioStreamPlayer,origin: Array,index: int):
+func playMus(player: AudioStreamPlayer,origin: Array,index: int, logging: bool):
 	loadmus = load(get_file(origin,index))
-	musID = index
-	if player.stream == loadmus && player.playing:
-		pass
+	if logging: musID = index
+	if player.stream == loadmus && player.playing: pass
 	else:
 		player.stream = loadmus
 		player.play()

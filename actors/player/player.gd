@@ -1,9 +1,9 @@
 extends Actor
 
 export var stomp_impulse = 1000.0
+var timer = Timer.new()
 var playerstate = 0
 var soundcount = 0
-signal player_state(ps)
 signal start_scroll
 signal died
 var x_speed
@@ -15,6 +15,8 @@ func _ready() -> void:
 #	[res://assets/sfx/, death.wav, hit.wav, jump.wav, reset.wav]
 	print(sfx_list)
 	$"/root/Level".connect("die", self, "reset")
+	timer.connect("timeout",self,"timeout")
+	add_child(timer)
 
 func _process(_delta):
 	pass
@@ -34,7 +36,6 @@ func _physics_process(_delta: float) -> void:
 			pass
 		4:
 			pass
-	emit_signal("player_state",playerstate)
 
 func movement() -> void:
 	var direction: = get_direction()
@@ -51,9 +52,13 @@ func get_direction() -> Vector2:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		l0nkLib.playMus($jump_channel, sfx_list, 3)
-	if Input.is_action_just_pressed("elpepe"):
-		l0nkLib.elpepe = true
+		l0nkLib.playMus($jump_channel, sfx_list, 3, false)
+	if Input.is_action_just_pressed("E"):
+		l0nkLib.codes += "e"
+	if Input.is_action_just_pressed("L"):
+		l0nkLib.codes += "l"
+	if Input.is_action_just_pressed("P"):
+		l0nkLib.codes += "p"
 
 func calculate_move_velocity(
 		linear_velocity: Vector2,
@@ -73,11 +78,11 @@ func calculate_move_velocity(
 
 
 func reset():
-	position.y = position.y - $"/root/Level/camera".position.y
+	position.y = position.y - $"/root/Level/camera".pos_before_reset
 
 
 func fire_death(body):
-	l0nkLib.playMus($sfx_channel, sfx_list, 2)
+	l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
 	if soundcount == 0: soundcount = 1
 
 
@@ -92,23 +97,34 @@ func tree_reset(body):
 	$"/root/Level/camera/background_texture".modulate = Color(1,1,1,1)
 	$"/root/Level".worldspeed = 15
 	$"/root/Level".worldstate = "calm"
-	$"/root/Level/bckgndMus".stop()
 	body.set_cell(cells[0].x, cells[0].y, tree)
 	print(body.get_tileset().find_tile_by_name("tree1"))
+	timer.start(12.0)
 	if l0nkLib.elpepe == false:
-		l0nkLib.playMus($sfx_channel, sfx_list, 4)
+		$"/root/Level/bckgndMus".stop()
+		l0nkLib.playMus($sfx_channel, sfx_list, 4, false)
+		l0nkLib.playMus($"/root/Level/bckgndMus",$"/root/Level/bckgndMus".songs_list, 1, true)
+		l0nkLib.musID = 1
+
+func timeout():
+	$"/root/Level".worldstate = "heating"
+	$"/root/Level/camera/background_texture/animation".play("heatup")
 
 
 func _on_sfx_channel_finished():
 	match soundcount:
 		1:
-			l0nkLib.playMus($sfx_channel, sfx_list, 2)
+			l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
 			soundcount = 2
 		2:
-			l0nkLib.playMus($sfx_channel, sfx_list, 2)
+			l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
 			soundcount = 3
 		3:
 			$"/root/Level".touched_sun()
 			position.y = 58.395
-			l0nkLib.playMus($sfx_channel, sfx_list, 1)
+			l0nkLib.playMus($sfx_channel, sfx_list, 1, false)
 			soundcount = 0
+
+
+func touched_sun(area):
+	$"/root/Level".touched_sun()

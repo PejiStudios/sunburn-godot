@@ -79,11 +79,7 @@ position = Vector2( 240, 0 )
 z_index = 100
 collision_layer = 4
 
-[node name="sun_hitbox" type="CollisionShape2D" parent="camera/sun"]
-light_mask = 2
-shape = SubResource( 1 )
-
-[node name="sun_texture" type="TextureRect" parent="camera/sun/sun_hitbox"]
+[node name="sun_texture" type="TextureRect" parent="camera/sun"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -240.0
@@ -93,6 +89,10 @@ texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="sun_hitbox" type="CollisionShape2D" parent="camera/sun"]
+light_mask = 2
+shape = SubResource( 1 )
 
 [node name="border" type="TileMap" parent="camera"]
 position = Vector2( 0, 540 )
@@ -141,5 +141,5 @@ position = Vector2( 239.846, 58.3945 )
 speed = Vector2( 100, 180 )
 gravity = 150.0
 
-[connection signal="body_entered" from="camera/sun" to="." method="touched_sun"]
+[connection signal="area_entered" from="camera/sun" to="." method="touched_sun"]
 [connection signal="finished" from="bckgndMus" to="bckgndMus" method="_on_bckgndMus_finished"]
