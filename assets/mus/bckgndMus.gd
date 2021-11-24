@@ -28,7 +28,7 @@ func _process(delta):
 func _on_bckgndMus_finished():
 	match l0nkLib.musID:
 		7:
-			l0nkLib.l0nkLib.playMus(self, songs_list, 7)
+			l0nkLib.playMus(self, songs_list, 7)
 		6:
 			l0nkLib.playMus(self, songs_list, 5)
 		5:
