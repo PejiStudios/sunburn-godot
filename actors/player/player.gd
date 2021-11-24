@@ -52,6 +52,8 @@ func get_direction() -> Vector2:
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		l0nkLib.playMus($jump_channel, sfx_list, 3)
+	if Input.is_action_just_pressed("elpepe"):
+		l0nkLib.elpepe = true
 
 func calculate_move_velocity(
 		linear_velocity: Vector2,
@@ -93,7 +95,8 @@ func tree_reset(body):
 	$"/root/Level/bckgndMus".stop()
 	body.set_cell(cells[0].x, cells[0].y, tree)
 	print(body.get_tileset().find_tile_by_name("tree1"))
-	l0nkLib.playMus($sfx_channel, sfx_list, 4)
+	if l0nkLib.elpepe == false:
+		l0nkLib.playMus($sfx_channel, sfx_list, 4)
 
 
 func _on_sfx_channel_finished():

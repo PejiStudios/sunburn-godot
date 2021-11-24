@@ -5,6 +5,7 @@ var bootsound = true
 var playing
 var loadmus
 var musID
+var elpepe = false
 
 func _ready():
 	pass

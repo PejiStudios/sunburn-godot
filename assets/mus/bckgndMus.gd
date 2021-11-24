@@ -11,6 +11,9 @@ func _ready():
 	print(songs_list)
 
 func _process(delta):
+	if l0nkLib.elpepe == true:
+		l0nkLib.playMus(self, songs_list, 7)
+		return
 	match $"/root/Level".worldstate:
 		"menu":
 			l0nkLib.playMus(self, songs_list, 6)
@@ -24,6 +27,8 @@ func _process(delta):
 
 func _on_bckgndMus_finished():
 	match l0nkLib.musID:
+		7:
+			l0nkLib.l0nkLib.playMus(self, songs_list, 7)
 		6:
 			l0nkLib.playMus(self, songs_list, 5)
 		5:

@@ -14,7 +14,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 240, 41 )
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=2]
 resource_name = "heatup"
 length = 38.3
 tracks/0/type = "value"
@@ -30,10 +30,10 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.2, 0, 0, 1 ) ]
 }
 
-[sub_resource type="ConvexPolygonShape2D" id=13]
+[sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 224, 30, 0, 30, 0, 0, 224, 0 )
 
-[sub_resource type="TileSet" id=11]
+[sub_resource type="TileSet" id=4]
 0/name = "title.png 0"
 0/texture = ExtResource( 2 )
 0/tex_offset = Vector2( 0, 0 )
@@ -44,14 +44,14 @@ points = PoolVector2Array( 224, 30, 0, 30, 0, 0, 224, 0 )
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 13 )
+0/shape = SubResource( 3 )
 0/shape_one_way = false
 0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 13 ),
+"shape": SubResource( 3 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
@@ -117,11 +117,11 @@ __meta__ = {
 }
 
 [node name="animation" type="AnimationPlayer" parent="camera/background_texture"]
-anims/heatup = SubResource( 12 )
+anims/heatup = SubResource( 2 )
 
 [node name="title" type="TileMap" parent="."]
 scale = Vector2( 2, 2 )
-tile_set = SubResource( 11 )
+tile_set = SubResource( 4 )
 cell_size = Vector2( 8, 8 )
 collision_layer = 2
 collision_mask = 0
