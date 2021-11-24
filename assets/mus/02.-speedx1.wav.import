@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/calm.wav-9417beceea72f817a50a63d7aee4a8b1.sample"
+path="res://.import/02.-speedx1.wav-1a2b4f9ca2d2696afa0f323d42f9bd26.sample"
 
 [deps]
 
-source_file="res://assets/mus/calm.wav"
-dest_files=[ "res://.import/calm.wav-9417beceea72f817a50a63d7aee4a8b1.sample" ]
+source_file="res://assets/mus/02.-speedx1.wav"
+dest_files=[ "res://.import/02.-speedx1.wav-1a2b4f9ca2d2696afa0f323d42f9bd26.sample" ]
 
 [params]
 

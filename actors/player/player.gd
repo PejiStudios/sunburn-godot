@@ -1,6 +1,6 @@
 extends Actor
 
-export var stomp_impulse = 1000.0
+export var stomp_impulse = 500
 var timer = Timer.new()
 var playerstate = 0
 var soundcount = 0
@@ -11,9 +11,6 @@ var y_speed
 var sfx_list = []
 
 func _ready() -> void:
-	l0nkLib.list_files("res://assets/sfx/", sfx_list, ".wav")
-#	[res://assets/sfx/, death.wav, hit.wav, jump.wav, reset.wav]
-	print(sfx_list)
 	$"/root/Level".connect("die", self, "reset")
 	timer.connect("timeout",self,"timeout")
 	add_child(timer)
@@ -46,19 +43,13 @@ func movement() -> void:
 
 func get_direction() -> Vector2:
 	return Vector2(
-		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
+		Input.get_axis("ui_left", "ui_right"),
 		-1.0 if Input.is_action_just_pressed("jump") and is_on_floor() else 1.0
 	)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		l0nkLib.playMus($jump_channel, sfx_list, 3, false)
-	if Input.is_action_just_pressed("E"):
-		l0nkLib.codes += "e"
-	if Input.is_action_just_pressed("L"):
-		l0nkLib.codes += "l"
-	if Input.is_action_just_pressed("P"):
-		l0nkLib.codes += "p"
+		l0nkLib.playMus($jump_channel, 3, false)
 
 func calculate_move_velocity(
 		linear_velocity: Vector2,
@@ -74,6 +65,7 @@ func calculate_move_velocity(
 	if is_jump_interrupted:
 		out.y = 0.0
 	is_jump_interrupted = true
+	if out.y >= 180: out.y = 180
 	return out
 
 
@@ -82,10 +74,8 @@ func reset():
 
 
 func fire_death(body):
-	l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
+	l0nkLib.playMus($sfx_channel, 2, false)
 	if soundcount == 0: soundcount = 1
-
-
 
 
 func tree_reset(body):
@@ -99,12 +89,8 @@ func tree_reset(body):
 	$"/root/Level".worldstate = "calm"
 	body.set_cell(cells[0].x, cells[0].y, tree)
 	print(body.get_tileset().find_tile_by_name("tree1"))
+	l0nkLib.playMus($"/root/Level/bckgndMus",1 ,true)
 	timer.start(12.0)
-	if l0nkLib.elpepe == false:
-		$"/root/Level/bckgndMus".stop()
-		l0nkLib.playMus($sfx_channel, sfx_list, 4, false)
-		l0nkLib.playMus($"/root/Level/bckgndMus",$"/root/Level/bckgndMus".songs_list, 1, true)
-		l0nkLib.musID = 1
 
 func timeout():
 	$"/root/Level".worldstate = "heating"
@@ -114,15 +100,15 @@ func timeout():
 func _on_sfx_channel_finished():
 	match soundcount:
 		1:
-			l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
+			l0nkLib.playMus($sfx_channel, 2, false)
 			soundcount = 2
 		2:
-			l0nkLib.playMus($sfx_channel, sfx_list, 2, false)
+			l0nkLib.playMus($sfx_channel, 2, false)
 			soundcount = 3
 		3:
 			$"/root/Level".touched_sun()
 			position.y = 58.395
-			l0nkLib.playMus($sfx_channel, sfx_list, 1, false)
+			l0nkLib.playMus($sfx_channel, 1, false)
 			soundcount = 0
 
 

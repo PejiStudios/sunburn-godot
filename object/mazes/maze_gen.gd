@@ -10,7 +10,6 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	fires = $dmg.get_used_cells()
 	duplicated = false
-	mazes_list = $"/root/Level".mazes_list
 	rng.randomize()
 	print("Camera = " + str($"/root/Level/camera".position) + "\nMap = " + str(position) + "\nMap to Camera = " + str(map_to_camera()))
 	$"/root/Level".connect("die", self, "reset")
@@ -20,7 +19,7 @@ func _process(delta):
 		$dmg.set_cell(i.x, i.y, get_tileset().find_tile_by_name("fire" + str(fire_frame)))
 	if map_to_camera().y <= 348 and duplicated == false:
 		duplicated = true
-		var rand_maze = random_entry(mazes_list)
+		var rand_maze = random_entry(l0nkLib.mazes_list)
 		print(rand_maze)
 		var load_maze = load(rand_maze)
 		var new_maze = load_maze.instance()

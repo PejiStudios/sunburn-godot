@@ -3,14 +3,11 @@ extends Node2D
 var worldstate
 var worldspeed
 var is_just_starting = true
-var mazes_list = []
-signal song_finished(index)
 signal die
 
 func _ready() -> void:
+	l0nkLib.playMus($bckgndMus, 6, true)
 	worldstate = "menu"
-	l0nkLib.list_files("res://object/mazes/", mazes_list, ".tscn")
-	print(mazes_list)
 
 
 func _process(delta):
@@ -30,6 +27,7 @@ func waitfor_start():
 	if $Player.position.y >= 180:
 		worldstate = "heating"
 		$camera/background_texture/animation.play("heatup")
+		l0nkLib.playMus($bckgndMus, 5, true)
 
 func game_process(delta):
 	if worldspeed >= 45:
@@ -52,9 +50,10 @@ func touched_sun():
 		if skip_first_child == false:
 			skip_first_child = true
 		else: _i.queue_free()
+	l0nkLib.playMus($bckgndMus, 6, true)
 
 func checkforcode():
 	if "elpepe" in l0nkLib.codes:
 		l0nkLib.elpepe = !l0nkLib.elpepe
 		l0nkLib.codes =  ""
-	print(l0nkLib.elpepe)
+

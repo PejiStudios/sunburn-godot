@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/speedx1.wav-2d1598679a6e7e2a1133acf73a2278de.sample"
+path="res://.import/04.-speedx3.wav-6e914e213e7b7bb85613be3d3c0311b5.sample"
 
 [deps]
 
-source_file="res://assets/mus/speedx1.wav"
-dest_files=[ "res://.import/speedx1.wav-2d1598679a6e7e2a1133acf73a2278de.sample" ]
+source_file="res://assets/mus/04.-speedx3.wav"
+dest_files=[ "res://.import/04.-speedx3.wav-6e914e213e7b7bb85613be3d3c0311b5.sample" ]
 
 [params]
 
