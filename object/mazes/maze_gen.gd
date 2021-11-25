@@ -1,6 +1,8 @@
 extends TileMap
 
 var duplicated = false
+var dmg
+var trees
 var mazes_list
 var fires
 var fire_frame = 1
@@ -8,7 +10,9 @@ var rng = RandomNumberGenerator.new()
 
 
 func _ready():
-	fires = $dmg.get_used_cells()
+	dmg = get_children()[1]
+	trees = get_children()[0]
+	fires = dmg.get_used_cells()
 	duplicated = false
 	rng.randomize()
 	print("Camera = " + str($"/root/Level/camera".position) + "\nMap = " + str(position) + "\nMap to Camera = " + str(map_to_camera()))
@@ -16,7 +20,7 @@ func _ready():
 
 func _process(delta):
 	for i in fires:
-		$dmg.set_cell(i.x, i.y, get_tileset().find_tile_by_name("fire" + str(fire_frame)))
+		dmg.set_cell(i.x, i.y, get_tileset().find_tile_by_name("fire" + str(fire_frame)))
 	if map_to_camera().y <= 348 and duplicated == false:
 		duplicated = true
 		var rand_maze = random_entry(l0nkLib.mazes_list)
@@ -44,8 +48,8 @@ func random_entry(origin: Array):
 	return str(origin[0]) + str(origin[rng.randi_range(1,origin.size()-1)])
 
 func reset():
-	$trees.set_cell($trees.get_used_cells()[0].x,
-		$trees.get_used_cells()[0].y, 
+	trees.set_cell(trees.get_used_cells()[0].x,
+		trees.get_used_cells()[0].y, 
 		get_tileset().find_tile_by_name("tree2"))
 	position.y = 540
 	duplicated = false

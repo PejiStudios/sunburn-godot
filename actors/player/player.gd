@@ -89,6 +89,7 @@ func tree_reset(body):
 	$"/root/Level".worldstate = "calm"
 	body.set_cell(cells[0].x, cells[0].y, tree)
 	print(body.get_tileset().find_tile_by_name("tree1"))
+	$"/root/Level/bckgndMus".stop()
 	l0nkLib.playMus($"/root/Level/bckgndMus",1 ,true)
 	timer.start(12.0)
 

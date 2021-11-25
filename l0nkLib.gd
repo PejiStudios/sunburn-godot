@@ -9,6 +9,7 @@ var playing
 var loadmus
 var musID
 var elpepe = false
+var editor = false
 var codes = ""
 
 
@@ -24,17 +25,31 @@ func _ready():
 	print(sfx_list)
 
 func _process(delta):
-	print(musID)
 	if "elpepe" in codes:
 		elpepe = !elpepe
 		codes = ""
 		match elpepe:
 			true:
+				print("true")
 				$"/root/Level/elpepe".volume_db = 0.0
 				$"/root/Level/bckgndMus".volume_db = -72.0
 			false:
+				print("false")
 				$"/root/Level/elpepe".volume_db = -72.0
 				$"/root/Level/bckgndMus".volume_db = 0.0
+	if "editor" in codes:
+		var editor_scene = load("res://scenes/editor.tscn")
+		var main_scene = load("res://scenes/main.tscn")
+		print("editor")
+		editor = !editor
+		codes = ""
+		match editor:
+			true: get_tree().change_scene_to(editor_scene)
+			false:
+				get_tree().change_scene_to(main_scene)
+				mazes_list = []
+				l0nkLib.list_files("res://object/mazes/", mazes_list, ".tscn")
+
 
 
 func list_files(path: String, target: Array, filter: String):
@@ -77,3 +92,13 @@ func _unhandled_input(event):
 		codes += "l"
 	if Input.is_action_just_pressed("P"):
 		codes += "p"
+	if Input.is_action_just_pressed("D"):
+		codes += "d"
+	if Input.is_action_just_pressed("I"):
+		codes += "i"
+	if Input.is_action_just_pressed("T"):
+		codes += "t"
+	if Input.is_action_just_pressed("O"):
+		codes += "o"
+	if Input.is_action_just_pressed("R"):
+		codes += "r"

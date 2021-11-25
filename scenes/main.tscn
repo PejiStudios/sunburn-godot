@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/mus/06.-title.wav" type="AudioStream" id=1]
 [ext_resource path="res://assets/ui/title.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://object/mazes/map_1.tscn" type="PackedScene" id=8]
 [ext_resource path="res://actors/player/player.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/backgrounds/background.png" type="Texture" id=10]
+[ext_resource path="res://assets/mus/07.-elpepeetesech.wav" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 240, 41 )
@@ -137,7 +138,7 @@ stream = ExtResource( 1 )
 script = ExtResource( 7 )
 
 [node name="elpepe" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 1 )
+stream = ExtResource( 11 )
 
 [node name="Player" parent="." instance=ExtResource( 9 )]
 position = Vector2( 239.846, 58.3945 )
