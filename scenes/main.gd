@@ -8,6 +8,7 @@ signal die
 func _ready() -> void:
 	l0nkLib.playMus($bckgndMus, 6, true)
 	worldstate = "menu"
+	gen_maze()
 
 
 func _process(delta):
@@ -42,13 +43,18 @@ func grace_process(delta):
 func touched_sun():
 	emit_signal("die")
 	print("sun")
-	worldstate = "menu"
 	is_just_starting = true
-	var skip_first_child = false
+	if worldstate == "menu": return
+	worldstate = "menu"
 	for _i in $maze_generation.get_children():
-		if skip_first_child == false:
-			skip_first_child = true
-		else: _i.queue_free()
+		_i.queue_free()
+	gen_maze()
 	l0nkLib.playMus($bckgndMus, 6, true)
 
-
+func gen_maze(index = l0nkLib.rng.randi_range(1,l0nkLib.mazes_list.size()-1)):
+	var rand_maze = str(l0nkLib.mazes_list[0]) + str(l0nkLib.mazes_list[index])
+	print(l0nkLib.mazes_list)
+	print(rand_maze)
+	var new_maze = load(rand_maze).instance()
+	$"/root/Level/maze_generation".add_child(new_maze)
+	new_maze.position = Vector2(0,540)

@@ -49,6 +49,7 @@ func _process(delta):
 				get_tree().change_scene_to(main_scene)
 				mazes_list = []
 				l0nkLib.list_files("res://object/mazes/", mazes_list, ".tscn")
+				$"/root/Level".gen_maze()
 
 
 

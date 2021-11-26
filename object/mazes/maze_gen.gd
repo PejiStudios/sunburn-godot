@@ -47,9 +47,3 @@ func map_to_camera() -> Vector2:
 func random_entry(origin: Array):
 	return str(origin[0]) + str(origin[rng.randi_range(1,origin.size()-1)])
 
-func reset():
-	trees.set_cell(trees.get_used_cells()[0].x,
-		trees.get_used_cells()[0].y, 
-		get_tileset().find_tile_by_name("tree2"))
-	position.y = 540
-	duplicated = false

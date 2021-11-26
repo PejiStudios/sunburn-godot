@@ -87,8 +87,8 @@ func tree_reset(body):
 	$"/root/Level/camera/background_texture".modulate = Color(1,1,1,1)
 	$"/root/Level".worldspeed = 15
 	$"/root/Level".worldstate = "calm"
-	body.set_cell(cells[0].x, cells[0].y, tree)
-	print(body.get_tileset().find_tile_by_name("tree1"))
+	for i in cells:
+		body.set_cellv(i,tree)
 	$"/root/Level/bckgndMus".stop()
 	l0nkLib.playMus($"/root/Level/bckgndMus",1 ,true)
 	timer.start(12.0)

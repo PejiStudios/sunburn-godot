@@ -50,9 +50,17 @@ func reset():
 	duplicated = false
 
 func _unhandled_input(event):
-	var mousepos = get_viewport().get_mouse_position()
+	$"/root/Level/LineEdit".release_focus()
+	$indicator.clear()
+	if $"/root/Level".worldstate != "menu": return
+	var mousepos = get_viewport().get_mouse_position()+$"/root/Level/camera".position
 	var mouse = world_to_map(mousepos)
-	var mouseoffset = Vector2(mouse.x, mouse.y-34.5)/2
+	var mouseoffset = Vector2(mouse)/2 + Vector2(0,-17)
+	if mouseoffset.x >= 30: return
+	elif mouseoffset.x <= -1: return
+	elif mouseoffset.y >= 1: return
+	elif mouseoffset.y <= -12: return
+	$indicator.set_cellv(mouseoffset,get_tileset().find_tile_by_name("indicator"))
 	if Input.is_action_pressed("mouse1"):
 		set_cellv(mouseoffset, get_tileset().find_tile_by_name("0sA"))
 	if Input.is_action_pressed("mouse2"):
